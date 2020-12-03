@@ -48,17 +48,17 @@
 
       <nav class="nav-menu d-none d-lg-block">
         <ul>
-          <li><a href="index.html">Start</a></li>
-          <li class="active"><a href="about.html">Over</a></li>
-          <li><a href="courses.html">Lespakketten</a></li>
-          <li><a href="events.html">Evenementen</a></li>
-          <li><a href="pricing.html">Prijzen</a></li>
-          <li><a href="contact.html">Contacteer ons</a></li>
+          <li><a href="index.php">Start</a></li>
+          <li class="active"><a href="about.php">Over</a></li>
+          <li><a href="courses.php">Lespakketten</a></li>
+          <li><a href="events.php">Evenementen</a></li>
+          <li><a href="pricing.php">Prijzen</a></li>
+          <li><a href="contact.php">Contacteer ons</a></li>
 
         </ul>
       </nav><!-- .nav-menu -->
 
-      <a href="courses.html" class="get-started-btn">Beginnen</a>
+      <a href="courses.html" class="get-started-btn">Inloggen</a>
 
     </div>
   </header><!-- End Header -->
@@ -136,9 +136,43 @@
 
         <div class="section-title">
           <h2>Getuigenissen</h2>
-          <p>Wat word er gezegd</p>
+          <p>Wat wordt er gezegd</p>
         </div>
+            <p>De studenten</p>
+          <?php
 
+            $mysqli=new MySQLI("localhost","root","","databasegip");
+
+            if (mysqli_connect_errno())
+            {
+                trigger_error('Fout bij verbinding: '.$mysqli->error);
+            }
+            else
+            {
+                $sql="select * from tbllid";
+                if ($stmt=$mysqli->prepare($sql))
+                {
+                    if(!$stmt->execute())
+                    {
+                        echo 'Het uitvoeren van de query is mislukt: '.$stmt->error.'in query';
+                    }
+                    else
+                    {
+                        $stmt->bind_result($id, $oudersid, $naam, $voornaam, $postid ,$adres ,$email, $telefoon, $Wachtwoord ,$typegitaarid ,$voorkeurmuziekgenre );
+                        while($stmt->fetch())
+                        {
+                            echo $oudersid."-".$naam."-".$voornaam.'<br>';
+                        }
+                    }
+                    $stmt->close();
+
+                }
+                else
+                {
+                    echo 'Er is een fout in de query: '.$mysqli->error;
+                }
+            }
+        ?>
         <div class="owl-carousel testimonials-carousel" data-aos="zoom-in" data-aos-delay="100">
 
           <div class="testimonial-wrap">

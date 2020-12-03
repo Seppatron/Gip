@@ -48,17 +48,17 @@
 
       <nav class="nav-menu d-none d-lg-block">
         <ul>
-          <li><a href="index.html">Start</a></li>
-          <li><a href="about.html">Over</a></li>
-          <li><a href="courses.html">Lespakketten</a></li>
-          <li><a href="events.html">Evenementen</a></li>
-          <li><a href="pricing.html">Prijzen</a></li>
-          <li class="active"><a href="contact.html">Contacteer ons</a></li>
+          <li><a href="index.php">Start</a></li>
+          <li><a href="about.php">Over</a></li>
+          <li><a href="courses.php">Lespakketten</a></li>
+          <li><a href="events.php">Evenementen</a></li>
+          <li><a href="pricing.php">Prijzen</a></li>
+          <li class="active"><a href="contact.php">Contacteer ons</a></li>
 
         </ul>
       </nav><!-- .nav-menu -->
 
-      <a href="courses.html" class="get-started-btn">Beginnen</a>
+      <a href="courses.html" class="get-started-btn">Inloggen</a>
 
     </div>
   </header><!-- End Header -->
