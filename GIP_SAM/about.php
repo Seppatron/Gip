@@ -42,7 +42,7 @@
   <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center">
 
-      <h1 class="logo mr-auto"><a href="index.html">Sam De Troyer</a></h1>
+      <h1 class="logo mr-auto"><a href="index.php">Sam De Troyer</a></h1>
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
@@ -58,7 +58,7 @@
         </ul>
       </nav><!-- .nav-menu -->
 
-      <a href="courses.html" class="get-started-btn">Inloggen</a>
+      <a href="login.php" class="get-started-btn">Inloggen</a>
 
     </div>
   </header><!-- End Header -->
@@ -134,45 +134,13 @@
     <section id="testimonials" class="testimonials">
       <div class="container" data-aos="fade-up">
 
-        <div class="section-title">
+            
+          
+          <br>
+          <div class="section-title">
           <h2>Getuigenissen</h2>
           <p>Wat wordt er gezegd</p>
         </div>
-            <p>De studenten</p>
-          <?php
-
-            $mysqli=new MySQLI("localhost","root","","databasegip");
-
-            if (mysqli_connect_errno())
-            {
-                trigger_error('Fout bij verbinding: '.$mysqli->error);
-            }
-            else
-            {
-                $sql="select * from tbllid";
-                if ($stmt=$mysqli->prepare($sql))
-                {
-                    if(!$stmt->execute())
-                    {
-                        echo 'Het uitvoeren van de query is mislukt: '.$stmt->error.'in query';
-                    }
-                    else
-                    {
-                        $stmt->bind_result($id, $oudersid, $naam, $voornaam, $postid ,$adres ,$email, $telefoon, $Wachtwoord ,$typegitaarid ,$voorkeurmuziekgenre );
-                        while($stmt->fetch())
-                        {
-                            echo $oudersid."-".$naam."-".$voornaam.'<br>';
-                        }
-                    }
-                    $stmt->close();
-
-                }
-                else
-                {
-                    echo 'Er is een fout in de query: '.$mysqli->error;
-                }
-            }
-        ?>
         <div class="owl-carousel testimonials-carousel" data-aos="zoom-in" data-aos-delay="100">
 
           <div class="testimonial-wrap">
