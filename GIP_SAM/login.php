@@ -19,7 +19,7 @@
 				</label>
 				<input type="password" name="wachtwoord" placeholder="wachtwoord" id="wachtwoord" required>
                 <input type="submit" value="Login">
-                <a href="admin_pagina.php" class="get-started-btn">admin</a>
+                <a href="admin_index.php" class="get-started-btn">admin</a>
 			</form>
 		</div>
 	</body>

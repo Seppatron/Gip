@@ -52,7 +52,7 @@
           <li><a href="events.php">Evenementen</a></li>
           <li><a href="pricing.php">Prijzen</a></li>
           <li><a href="contact.php">Contacteer ons</a></li>
-            <li class="active"><a href="admin_pagina.php">Admin</a></li>
+            <li class="active"><a href="admin_index.php">Admin</a></li>
 
         </ul>
       </nav><!-- .nav-menu -->
@@ -61,6 +61,9 @@
 
     </div>
   </header><!-- End Header -->
+<br>
+<br>
+    <a href="admin_index.php" class="get-started-btn">Terug</a>
 <br>
 <br>
 <p>De studenten</p>

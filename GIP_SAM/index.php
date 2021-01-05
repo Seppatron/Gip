@@ -69,7 +69,7 @@
         <h1>Leer gitaar</h1>
         <h1>of Basgitaar </h1>
         <h2>Van Sam De Troyer</h2>
-      <a href="courses.html" class="btn-get-started">Beginnen</a>
+      <a href="login.php" class="btn-get-started">Inloggen</a>
     </div>
   </section><!-- End Hero -->
 
