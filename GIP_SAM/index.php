@@ -101,7 +101,7 @@
             <p>
               Test test test test
             </p>
-            <a href="about.html" class="learn-more-btn">Meer</a>
+            <a href="about.php" class="learn-more-btn">Meer</a>
           </div>
         </div>
 
