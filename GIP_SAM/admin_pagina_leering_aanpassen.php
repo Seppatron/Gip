@@ -217,6 +217,42 @@
     </select>
         </td>
         </tr>
+        <td><label for="laspaket">Postcode:</label></td>
+            <td><select name="postcode">
+            <?php
+                $mysqli=new MySQLI("localhost","root","","databasegip");
+
+                if (mysqli_connect_errno())
+                {
+                    trigger_error('Fout bij verbinding: '.$mysqli->error);
+                }
+                else
+                {
+                    $sql="select * from tblgemeente group by PCode order by PCode";
+                    if ($stmt=$mysqli->prepare($sql))
+                    {
+                        if(!$stmt->execute())
+                        {
+                            echo 'Het uitvoeren van de query is mislukt: '.$stmt->error.'in query';
+                        }
+                        else
+                        {
+                            $stmt->bind_result($Postcodeid,$PCode,$gemeente,$UCGemeente);
+                            while($stmt->fetch())
+                            {
+                                    echo "<option>".$PCode."</option>";
+                            }
+                        }
+                        $stmt->close();
+                    }
+                    else
+                    {
+                        echo 'Er is een fout in de query: '.$mysqli->error;
+                    }
+                }
+            ?>  
+    </select>
+        </td>
         <tr>
             <td><label for="paswoord">paswoord:</label></td>
             <td><input type="password" name="paswoord" placeholder="paswoord" id="paswoord"/></td>

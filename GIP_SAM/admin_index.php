@@ -67,8 +67,8 @@
 <br>
 <br>
     <h2>Leerlingen </h2>
-    <a href="admin_pagina_leering_overzicht.php" class="get-started-btn">Leerling overzicht</a>
     <a href="admin_pagina_leering_toevoegen.php" class="get-started-btn">Leerling Toevoegen</a>
+    <a href="admin_pagina_leering_overzicht.php" class="get-started-btn">Leerling overzicht</a>
     <br>
     <br>
     <h2>Lespaketten </h2>

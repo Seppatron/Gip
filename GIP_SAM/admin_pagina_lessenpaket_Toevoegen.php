@@ -136,7 +136,7 @@
                 $aantallessen = $mysqli->real_escape_string($_POST['aantallessen']);
                 if(!$stmt->execute())
                 {
-                    echo 'het uitvoeren van de query insert is mislukt:';
+                    echo 'het uitvoeren van de query insert is mislukt: '.$mysqli->error;
                 }
                 else 
                 {  
