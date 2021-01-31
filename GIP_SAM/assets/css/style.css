@@ -590,7 +590,7 @@ section
   width: 120px;
   height: 1px;
   display: inline-block;
-  background: #9ae1af;
+  background: #0000FF;
   margin: 4px 10px;
 }
 
@@ -602,7 +602,7 @@ section
   font-weight: 700;
   text-transform: uppercase;
   font-family: "Poppins", sans-serif;
-  color: #37423b;
+  color: #0000FF;
 }
 
 .breadcrumbs 

@@ -83,11 +83,17 @@
           <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
             <h3>Sam</h3>
             <p class="font-italic">
-              Sam is een gitarist en basist die al jaaren les geeft.
+              Een voorliefde en begeestering voor Spaanse en Zuid-Amerikaanse muziek, laat zich onmiskenbaar horen in het oeuvre van gitarist Sam De Troyer.
+            Voor zijn eigen composities laat hij zich inspireren door de vurigheid van de Flamenco, de zachtheid van de Fado, de uitbundigheid van menig Zuid-Amerikaans lied en de zoete melancholie van de Tango.
+            </p>
+            <p class="font-italic">
+              Naast gitarist is Sam De Troyer sinds 2004 ook gitaarleraar en bandcoach. Als bandcoach realiseerde hij diverse 'participatieprojecten' in enkele Belgische gevangenissen, waarbij gevangenen actief betrokken werden bij het schrijven van songteksten en muziek, naast het bespelen van een muziekinstrument.
+                Zijn herkenbare exotische stijl vind je ook terug in de muzikale duo's en projecten waarin hij actief is, waaronder: Duende Doble, duo Jacques Vandevelde en Sam De Troyer, Falda y Blusa, Atamé en vzw Studio Garcia Lorca.
             </p>
             <ul>
-              <li><i class="icofont-check-circled"></i> Gitaar.</li>
-              <li><i class="icofont-check-circled"></i> Bas.</li>
+                <li><i class="icofont-check-circled"></i> Akoestische gitaar.</li>
+                <li><i class="icofont-check-circled"></i> Elektrische gitaar.</li>
+                <li><i class="icofont-check-circled"></i> Basgitaar.</li>
             </ul>
             <p>
               
@@ -262,8 +268,8 @@
         </div>
       </div>
       <div class="social-links text-center text-md-right pt-3 pt-md-0">
-        <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-        <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+        <a href="" class="twitter"><i class="bx bxl-twitter"></i></a>
+        <a href="https://www.facebook.com/sam.detroyer.9" class="facebook"><i class="bx bxl-facebook"></i></a>
         <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
         <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
         <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>

@@ -89,18 +89,15 @@
             <img src="assets/img/sam_beter.jpg" class="img-fluid" alt="">
           </div>
           <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
-            <h3>Een beetje uitleg en dan verder verwijzen naar .</h3>
             <p class="font-italic">
-              Sam is een gitarist en basist die al jaaren les geeft.
+              Een voorliefde en begeestering voor Spaanse en Zuid-Amerikaanse muziek, laat zich onmiskenbaar horen in het oeuvre van gitarist Sam De Troyer.
+                Voor zijn eigen composities laat hij zich inspireren door de vurigheid van de Flamenco, de zachtheid van de Fado, de uitbundigheid van menig Zuid-Amerikaans lied en de zoete melancholie van de Tango.
             </p>
             <ul>
-              <li><i class="icofont-check-circled"></i> Test test test test.</li>
-              <li><i class="icofont-check-circled"></i> Test test test test.</li>
-              <li><i class="icofont-check-circled"></i> Test test test test.</li>
+                <li><i class="icofont-check-circled"></i> Akoestische gitaar.</li>
+                <li><i class="icofont-check-circled"></i> Elektrische gitaar.</li>
+                <li><i class="icofont-check-circled"></i> Basgitaar.</li>
             </ul>
-            <p>
-              Test test test test
-            </p>
             <a href="about.php" class="learn-more-btn">Meer</a>
           </div>
         </div>
