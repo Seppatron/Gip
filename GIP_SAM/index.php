@@ -112,7 +112,38 @@
         <div class="row counters">
 
           <div class="col-lg-3 col-6 text-center">
-            <span data-toggle="counter-up">50</span>
+            <span data-toggle="counter-up">
+                <?php
+                    $mysqli=new MySQLI("localhost","root","","databasegip");
+
+                    if (mysqli_connect_errno())
+                    {
+                        trigger_error('Fout bij verbinding: '.$mysqli->error);
+                    }
+                    else
+                    {
+                        $sql="SELECT COUNT(ID) FROM tbllid";
+                        if ($stmt=$mysqli->prepare($sql))
+                        {
+                            if(!$stmt->execute())
+                            {
+                                echo 'Het uitvoeren van de query is mislukt: '.$stmt->error.'in query';
+                            }
+                            else
+                            {
+                                $stmt->bind_result($aantal);
+                                $stmt->fetch();
+                                echo $aantal;
+                            }
+                            $stmt->close();
+                        }
+                        else
+                        {
+                            echo 'Er is een fout in de query: '.$mysqli->error;
+                        }
+                    }
+                ?>   
+              </span>
             <p>Students</p>
           </div>
 

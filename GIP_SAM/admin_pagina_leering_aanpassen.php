@@ -70,6 +70,11 @@
 <br>
 <br>
     <h2>Leerling aanpassen</h2>
+    
+    <?php
+        
+    ?>
+    
     <table cellspacing="4">
         <tr>
             <td><label for="voornaam">voornaam:</label></td>

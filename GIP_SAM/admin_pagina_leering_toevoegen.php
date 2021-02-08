@@ -455,7 +455,9 @@ if ((isset($_POST["verzenden"]))&& (isset($_POST["genre"]) && ($_POST["genre"] !
         </tr>
         <tr>
             <td><label for="gemeente">gemeente:</label></td>
-            <td><input type="text" name="gemeente" placeholder="gemeente" id="gemeente" required/></td>
+            <td>
+                <input type="text" name="gemeente" placeholder="gemeente" id="gemeente" required/>
+            </td>
             <td><label id="gemeenteVerplicht" class="fout"></label></td>
         </tr>
         <tr>

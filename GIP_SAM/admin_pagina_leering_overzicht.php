@@ -82,13 +82,13 @@
                         <b>ID</b>
                     </td>
                     <td>
-                        <b>Name</b>
+                        <b>Naam</b>
                     </td>
                     <td>
                         <b>Achternaam</b>
                     </td>
                     <td>
-                        <b>Email</b>
+                        <b>E-mail</b>
                     </td>
                     <td>
                         <b>Telefoon</b>
@@ -97,16 +97,16 @@
                         <b>Adres</b>
                     </td>
                     <td>
-                        <b>postcode</b>
+                        <b>Postcode</b>
                     </td>
                     <td>
                         <b>Type gitaar</b>
                     </td>
                     <td>
-                        <b>Lievelings genre</b>
+                        <b>Lievelingsgenre</b>
                     </td>
                     <td>
-                        <b>Edit</b>
+                        <b>Aanpassen</b>
                     </td>
                 </tr>
                 
@@ -154,7 +154,7 @@
                                     echo "<tr><td>".$id."</td><td>". $voornaam ."</td><td>". $naam ."</td><td>".$email."</td><td>".$telefoon."</td><td>".$adres."</td><td>".$PCode."</td><td>".$typegitaren."</td><td>".$muziekgenre."</td><td>";
                     ?>
                                     <form name="form1" method="post" action="admin_pagina_leering_aanpassen.php?action=edit&id=<?php echo $id;?>">
-                                        <input type="submit" name="btnedit" id="action" value="Edit">
+                                        <input type="submit" name="btnedit" id="action" value="Aanpassen">
                                     </form>
                     <?php
                                     echo "</td></tr>";
