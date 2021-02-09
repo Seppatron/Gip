@@ -69,26 +69,74 @@
 <br>
 <br>
 <br>
-    <h2>Leerling aanpassen</h2>
-    
-    <?php
-        
+<?php 
+    print_r($_POST);
+    print_r($_GET);
+?>
+    <?php 
+        session_start();
+        if(! isset($_POST["verzenden"]))
+        {
+            $_SESSION["id"] = $_GET["id"];
+        }
     ?>
-    
+<?php
+    $mysqli = new MySQLi("localhost", "root", "", "databasegip");
+    if(mysqli_connect_errno()) 
+    {
+            trigger_error("fout bij verbinding: ".$mysqli->error);
+    }
+    else 
+    {            
+        $sql = "SELECT naam,voornaam,postid,adres,email,telefoon,wachtwoord,typegitaarid,genreid FROM tbllid where id= ?"; 
+        if( $stmt = $mysqli->prepare($sql))
+        {
+            $stmt->bind_param('i', $id);
+            $id = $mysqli->real_escape_string($_SESSION["id"]);
+            if(!$stmt->execute()) 
+            {
+                echo 'Het uitvoeren van de query is mislukt: '.$stmt->error.' in query: '.$sql;
+            } 
+            else 
+            {
+                $stmt->bind_result($naam, $voornaam,$postid,$adres,$email,$telefoon,$wachtwoord,$typegitaarid,$genreid);
+                if(!$stmt->execute()) 
+                {
+                    echo "het uitvoeren van de query is mislukt: ".$stmt->error." in query ".$sql;
+                }
+                else 
+                {
+                    $stmt->bind_result($naam, $voornaam,$postid,$adres,$email,$telefoon,$wachtwoord,$typegitaarid,$genreid);
+                    while($stmt->fetch()) 
+                    {
+                        echo $naam." ".$voornaam." ".$postid." ".$adres." ".$email." ".$telefoon." ".$wachtwoord." ".$typegitaarid." ".$genreid."<br>";
+                    }
+                    echo " gelukt";
+                }
+                $stmt->close();
+            }
+            
+            }
+            else {
+                echo "er zit een fout in de query";
+            }
+        }
+?>
+    <h2>Leerling aanpassen</h2>
     <table cellspacing="4">
         <tr>
             <td><label for="voornaam">voornaam:</label></td>
-            <td><input type="text" name="voornaam" id="voornaam" placeholder="voornaam" required/></td>
+            <td><input type="text" name="voornaam" id="voornaam" placeholder="voornaam" value= "<?php echo $voornaam; ?>" /></td>
             <td><label id="voornaamVerplicht" class="fout"></label></td>
         </tr>
         <tr>
             <td><label for="naam">Naam:</label></td>
-            <td><input type="text" name="naam" id="naam" placeholder="naam" required/></td>
+            <td><input type="text" name="naam" id="naam" value= "<?php echo $naam; ?>"/></td>
             <td><label id="naamVerplicht" class="fout"></label></td>
         </tr>  
         <tr>
             <td><label for="email">email:</label></td>
-            <td><input type="text" name="email" placeholder="email" id="email"/></td>
+            <td><input type="text" name="email" placeholder="email" id="email" value= "<?php echo $email; ?>"/></td>
             <td><label id="emailVerplicht" class="fout"></label></td>
         </tr>
         <tr>
@@ -103,9 +151,11 @@
                 }
                 else
                 {
-                    $sql="select * from tblgemeente group by PCode order by PCode";
+                    $sql="select g.Postcodeid,g.PCode,g.gemeente,g.UCGemeente,l.id from tblgemeente g, tbllid l group by g.PCode order by g.PCode where l.id=?";
                     if ($stmt=$mysqli->prepare($sql))
                     {
+                        $stmt->bind_param('i', $id);
+                        $id = $mysqli->real_escape_string($_SESSION["id"]);
                         if(!$stmt->execute())
                         {
                             echo 'Het uitvoeren van de query is mislukt: '.$stmt->error.'in query';
@@ -131,17 +181,17 @@
         </tr>
         <tr>
             <td><label for="gemeente">gemeente:</label></td>
-            <td><input type="text" name="gemeente" placeholder="gemeente" id="gemeente" required/></td>
+            <td><input type="text" name="gemeente" placeholder="gemeente" id="gemeente" /></td>
             <td><label id="gemeenteVerplicht" class="fout"></label></td>
         </tr>
         <tr>
             <td><label for="adres">adres:</label></td>
-            <td><input type="text" name="adres" placeholder="adres" id="adres" required/></td>
+            <td><input type="text" name="adres" placeholder="adres" id="adres" value= "<?php echo $adres; ?>"/></td>
             <td><label id="adresVerplicht" class="fout"></label></td>
         </tr>
         <tr>
             <td><label for="telefoon">telefoon:</label></td>
-            <td><input type="text" name="telefoon" placeholder="telefoon" id="telefoon" required/></td>
+            <td><input type="text" name="telefoon" placeholder="telefoon" id="telefoon" value= "<?php echo $telefoon; ?>"/></td>
             <td><label id="telefoonVerplicht" class="fout"></label></td>
         </tr>
         <tr>
@@ -222,42 +272,6 @@
     </select>
         </td>
         </tr>
-        <td><label for="laspaket">Postcode:</label></td>
-            <td><select name="postcode">
-            <?php
-                $mysqli=new MySQLI("localhost","root","","databasegip");
-
-                if (mysqli_connect_errno())
-                {
-                    trigger_error('Fout bij verbinding: '.$mysqli->error);
-                }
-                else
-                {
-                    $sql="select * from tblgemeente group by PCode order by PCode";
-                    if ($stmt=$mysqli->prepare($sql))
-                    {
-                        if(!$stmt->execute())
-                        {
-                            echo 'Het uitvoeren van de query is mislukt: '.$stmt->error.'in query';
-                        }
-                        else
-                        {
-                            $stmt->bind_result($Postcodeid,$PCode,$gemeente,$UCGemeente);
-                            while($stmt->fetch())
-                            {
-                                    echo "<option>".$PCode."</option>";
-                            }
-                        }
-                        $stmt->close();
-                    }
-                    else
-                    {
-                        echo 'Er is een fout in de query: '.$mysqli->error;
-                    }
-                }
-            ?>  
-    </select>
-        </td>
         <tr>
             <td><label for="paswoord">paswoord:</label></td>
             <td><input type="password" name="paswoord" placeholder="paswoord" id="paswoord"/></td>

@@ -195,7 +195,7 @@
     <?php print_r($_POST);
     ?>
     
-    <?php
+<?php
 if ((isset($_POST["verzenden"]))&& (isset($_POST["postcode"])) && ($_POST["postcode"] != "") &&isset($_POST["gemeente"]) && $_POST["gemeente"] !="" )
 {
     $mysqli=new MySQLI("localhost","root","","databasegip");

@@ -135,7 +135,6 @@
                         {
                              $sql = "SELECT l.id,l.naam,l.voornaam,l.postid,l.adres,l.email,l.telefoon,l.typegitaarid,l.genreid,g.PCode,g.PostcodeId,t.typeID,t.typegitaren,b.genreid,b.muziekgenre FROM tbllid l,tblgemeente g,tbltypes t,tblgenre b WHERE l.voornaam LIKE ? and l.postid=g.PostcodeId and l.typegitaarid=t.typeID and l.genreid=b.genreid ORDER BY l.id";
                         }
-
                         if($stmt = $mysqli->prepare($sql)) 
                         {
                             $stmt->bind_param('s', $zoek);
