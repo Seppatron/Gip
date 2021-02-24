@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 25, 2021 at 12:03 AM
+-- Generation Time: Feb 25, 2021 at 12:47 AM
 -- Server version: 5.7.17
 -- PHP Version: 5.6.30
 
@@ -2984,6 +2984,13 @@ CREATE TABLE `tblinschrijvingen` (
   `Inschrijvingsid` int(11) NOT NULL,
   `Leerlingid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tblinschrijvingen`
+--
+
+INSERT INTO `tblinschrijvingen` (`Inschrijvingsid`, `Leerlingid`) VALUES
+(1, 1);
 
 -- --------------------------------------------------------
 
