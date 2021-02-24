@@ -1,3 +1,10 @@
+<?php 
+        session_start();
+        if(! isset($_POST["id"]))
+        {
+            $_SESSION["id"] = $_GET["id"];
+        }
+    ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,10 +35,97 @@
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
     <style type="text/css">
-    .fout {
-	color: #F00;
-     }
+    .fout 
+    {
+        color: #F00;
+        }
     </style>
+<script type="text/javascript"> 
+        function invoegen()
+{
+    var ok = true;
+    if (document.getElementById("naam").value=="")
+    {
+        document.getElementById("naamVerplicht").innerHTML="Gelieve een naam in te vullen";
+        ok=false;
+    }
+    else
+    {
+        document.getElementById("naamVerplicht").innerHTML="";
+    }
+    if (document.getElementById("voornaam").value=="")
+    {
+        document.getElementById("voornaamVerplicht").innerHTML="Gelieve een voornaam in te vullen";
+        ok=false;
+    }
+    else
+    {
+        document.getElementById("voornaamVerplicht").innerHTML="";
+    }
+    if (document.getElementById("gemeente").value=="")
+    {
+        document.getElementById("gemeenteVerplicht").innerHTML="Gelieve de juiste gemeente in te vullen";
+        ok=false;
+    }
+    else
+    {
+        document.getElementById("gemeenteVerplicht").innerHTML="";
+    }
+    if (document.getElementById("adres").value=="")
+    {
+        document.getElementById("adresVerplicht").innerHTML="Gelieve een adres in te vullen";
+        ok=false;
+    }
+    else
+    {
+        document.getElementById("adresVerplicht").innerHTML="";
+    }
+    if (document.getElementById("telefoon").value=="")
+    {
+        document.getElementById("telefoonVerplicht").innerHTML="Gelieve een telefoonnummer in te vullen";
+        ok=false;
+    }
+    else
+    {
+        document.getElementById("telefoonVerplicht").innerHTML="";
+    }
+    
+    if (document.getElementById("email").value=="")
+    {
+        document.getElementById("emailVerplicht").innerHTML="Gelieve een email in te vullen";
+        ok=false;
+    }
+    else
+    {
+        document.getElementById("emailVerplicht").innerHTML="";
+    }
+    if (document.getElementById("email").value != "") 
+    {
+        var string=document.getElementById("email").value;
+        var filter= /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if ( filter.test(string))
+        {
+         document.getElementById("emailVerplicht").innerHTML="";
+        }
+        else
+        {
+             document.getElementById("emailVerplicht").innerHTML="Ongeldig email adres";
+            ok=false;
+        }
+     }
+    if (ok==true){
+     <?php
+	
+	if (isset($_POST["naam"]) && $_POST["naam"] != "") {
+
+	$_POST["verzenden"]="goed";
+	}
+	?>
+       
+    document.form1.invoegen();
+}
+}
+</script>
 </head>
 
 <body>
@@ -65,21 +159,10 @@
 <br>
 <br>
 <br>
-    <a href="admin_index.php" class="get-started-btn">Terug</a>
+    <a href="admin_pagina_leering_overzicht.php" class="get-started-btn">Terug</a>
 <br>
 <br>
-<br>
-<?php 
-    print_r($_POST);
-    print_r($_GET);
-?>
-    <?php 
-        session_start();
-        if(! isset($_POST["verzenden"]))
-        {
-            $_SESSION["id"] = $_GET["id"];
-        }
-    ?>
+<br> 
 <?php
     $mysqli = new MySQLi("localhost", "root", "", "databasegip");
     if(mysqli_connect_errno()) 
@@ -88,7 +171,7 @@
     }
     else 
     {            
-        $sql = "SELECT naam,voornaam,postid,adres,email,telefoon,wachtwoord,typegitaarid,genreid FROM tbllid where id= ?"; 
+        $sql = "SELECT id,naam,voornaam,postid,adres,email,telefoon,typegitaarid,typegitaren, g.genreid,muziekgenre, Pcode, Gemeente  FROM tbllid l, tblgemeente, tblgenre g , tbltypes t where id=? and postid=Postcodeid and g.genreid=l.genreid and typegitaarid= t.typeID"; 
         if( $stmt = $mysqli->prepare($sql))
         {
             $stmt->bind_param('i', $id);
@@ -99,17 +182,17 @@
             } 
             else 
             {
-                $stmt->bind_result($naam, $voornaam,$postid,$adres,$email,$telefoon,$wachtwoord,$typegitaarid,$genreid);
+                $stmt->bind_result($id,$naam, $voornaam,$postid,$adres,$email,$telefoon,$typegitaarid,$typegitaren,$genreid, $muziekgenre,$postcode,$gemeente);
                 if(!$stmt->execute()) 
                 {
                     echo "het uitvoeren van de query is mislukt: ".$stmt->error." in query ".$sql;
                 }
                 else 
                 {
-                    $stmt->bind_result($naam, $voornaam,$postid,$adres,$email,$telefoon,$wachtwoord,$typegitaarid,$genreid);
+                   
                     while($stmt->fetch()) 
                     {
-                        echo $naam." ".$voornaam." ".$postid." ".$adres." ".$email." ".$telefoon." ".$wachtwoord." ".$typegitaarid." ".$genreid."<br>";
+                        echo $naam." ".$voornaam." ".$postid." ".$adres." ".$email." ".$telefoon."  ".$typegitaarid." ".$typegitaren." " . $genreid." " . $muziekgenre. " ".$postcode. " ". $gemeente."<br>";
                     }
                     echo " gelukt";
                 }
@@ -122,6 +205,49 @@
             }
         }
 ?>
+    <?php 
+    if ((isset($_POST["verzenden"]))&& (isset($_POST["naam"])) && ($_POST["naam"] != "") &&isset($_POST["voornaam"]) && $_POST["voornaam"] !="")
+    {
+        
+        echo "hier";
+        $mysqli= new MySQLi("localhost","root","","databasegip");
+        if(mysqli_connect_errno()) 
+        {
+            trigger_error('Fout bij verbinding: '.$mysqli->error); 
+        }
+        else
+        {  
+            $sql= "UPDATE tbloudersperleerling SET naam = ?,voornaam= ?,postid= ?,adres= ?, email = ?,telefoon= ?,typegitaarid= ?,genreid= ? WHERE id = ?";
+            if ($stmt=$mysqli->prepare($sql))
+            {
+                $stmt->bind_param('ississsii', $id,$naam, $voornaam,$postid,$adres,$email,$telefoon,$typegitaarid,$genreid);
+                $naam = $mysqli->real_escape_string($_POST['naam']) ;
+                $voornaam = $mysqli->real_escape_string($_POST['voornaam']);
+                $postid=$mysqli->real_escape_string('postcode');
+                $adres = $mysqli->real_escape_string($_POST['adres']);
+                $email = $mysqli->real_escape_string($_POST['email']);
+                $telefoon = $mysqli->real_escape_string($_POST['telefoon']);
+                $typegitaarid = $mysqli->real_escape_string($typeID1);
+                $genreid = $mysqli->real_escape_string($genreid1);
+                $id= $_SESSION["id"];
+                if(!$stmt->execute())
+                {
+                    echo 'Het uitvoeren van de query is mislukt: '.$mysqli->error;
+                }
+                else
+                {
+                    echo 'het aanpassen is gelukt';
+                }
+                   $stmt->close();
+            }
+            else
+            {
+                echo 'Er zit een fout in de query '.$mysqli->error; 
+            }
+        }
+    }
+?>
+    <form id="form1" name="form1" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?> "  >
     <h2>Leerling aanpassen</h2>
     <table cellspacing="4">
         <tr>
@@ -141,47 +267,13 @@
         </tr>
         <tr>
         <td><label for="postcode">Postcode:</label></td>
-            <td><select name="postcode">
-            <?php
-                $mysqli=new MySQLI("localhost","root","","databasegip");
-
-                if (mysqli_connect_errno())
-                {
-                    trigger_error('Fout bij verbinding: '.$mysqli->error);
-                }
-                else
-                {
-                    $sql="select g.Postcodeid,g.PCode,g.gemeente,g.UCGemeente,l.id from tblgemeente g, tbllid l group by g.PCode order by g.PCode where l.id=?";
-                    if ($stmt=$mysqli->prepare($sql))
-                    {
-                        $stmt->bind_param('i', $id);
-                        $id = $mysqli->real_escape_string($_SESSION["id"]);
-                        if(!$stmt->execute())
-                        {
-                            echo 'Het uitvoeren van de query is mislukt: '.$stmt->error.'in query';
-                        }
-                        else
-                        {
-                            $stmt->bind_result($Postcodeid,$PCode,$gemeente,$UCGemeente);
-                            while($stmt->fetch())
-                            {
-                                    echo "<option>".$PCode."</option>";
-                            }
-                        }
-                        $stmt->close();
-                    }
-                    else
-                    {
-                        echo 'Er is een fout in de query: '.$mysqli->error;
-                    }
-                }
-            ?>  
-    </select>
+            <td><input type="text" name="postcode" placeholder="postcode" id="postcode" value= "<?php echo $postcode; ?>"/></td>
+            <td><label id="postcodeVerplicht" class="fout"></label>
         </td>
         </tr>
         <tr>
             <td><label for="gemeente">gemeente:</label></td>
-            <td><input type="text" name="gemeente" placeholder="gemeente" id="gemeente" /></td>
+            <td><input type="text" name="gemeente" placeholder="gemeente" id="gemeente" value= "<?php echo $gemeente; ?>" /></td>
             <td><label id="gemeenteVerplicht" class="fout"></label></td>
         </tr>
         <tr>
@@ -215,11 +307,20 @@
                         }
                         else
                         {
-                            $stmt->bind_result($typeID,$typegitaren);
+                            $stmt->bind_result($typeID,$typegitaren2);
                             while($stmt->fetch())
-                            {
-                                    echo "<option>".$typegitaren."</option>";
+                            { 
+                                if ($typegitaren2 == $typegitaren)
+                                    {
+                                   
+                                  echo  "<option value=$typegitaren2 selected>".$typegitaren2."</option>";
+                                }
+                                else{
+                                   
+                                    echo "<option value=$typegitaren2>".$typegitaren2."</option>";
+                                }
                             }
+                            
                         }
                         $stmt->close();
                     }
@@ -254,11 +355,19 @@
                         }
                         else
                         {
-                            $stmt->bind_result($genreid,$muziekgenre);
+                            $stmt->bind_result($genreid,$muziekgenre2);
                             while($stmt->fetch())
-                            {
+                            {  if ($muziekgenre2 == $muziekgenre)
+                                    {
+                                   
+                                  echo  "<option value=$muziekgenre2 selected>".$muziekgenre2."</option>";
+                                }
+                                else{
+                                   
+                                    echo "<option value=$muziekgenre2>".$muziekgenre2."</option>";
+                                }
                                 
-                                    echo "<option>".$muziekgenre."</option>";
+                                  
                             }
                         }
                         $stmt->close();
@@ -273,25 +382,16 @@
         </td>
         </tr>
         <tr>
-            <td><label for="paswoord">paswoord:</label></td>
-            <td><input type="password" name="paswoord" placeholder="paswoord" id="paswoord"/></td>
-            <td><label id="paswoordControle" class="fout"></label><label id="paswoordVerplicht" class="fout" required></label></td>
-        </tr>
-        <tr>
-            <td><label for="paswoordConfirm">bevestiging paswoord:</label></td>
-            <td><input type="password" name="paswoordConfirm" id="paswoordConfirm" placeholder="paswoord controle" ></td>
-            <td><label id="paswoordConfirmControle" class="fout"></label><label id="paswoordConfirmVerplicht" class="fout" required></label></td>
-        </tr>
-        <tr>
             <td>
-                <a class="get-started-btn" type="button" name="verzenden" id="verzenden" value="Verzenden" onClick="invoegen()">Leerling toevoegen</a>
+                <!--  <a class="get-started-btn" type="button" name="verzenden" id="verzenden" value="Verzenden" onClick="invoegen()">Leerling toevoegen</a> -->
+                <input type="submit" name="verzenden" id="verzenden" value="verzenden">
             </td>
         </tr>
     </table>
 <br>
 <br>
 <br>   
-    
+    </form>
 
     </div>
 <br>

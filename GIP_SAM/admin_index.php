@@ -1,3 +1,11 @@
+  <?php
+    session_start();
+    if(!isset($_SESSION["admin"]))
+    {
+        die("u moet inloggen");
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -66,15 +74,14 @@
 <br>
 <br>
 <br>
-    <h2>Leerlingen </h2>
+    <h2>Leerlingen</h2>
     <a href="admin_pagina_leering_toevoegen.php" class="get-started-btn">Leerling Toevoegen</a>
     <a href="admin_pagina_leering_overzicht.php" class="get-started-btn">Leerling overzicht</a>
     <br>
     <br>
-    <h2>Lespaketten </h2>
-    <a href="admin_pagina_lessenpaket_Toevoegen.php" class="get-started-btn">Lespaketten toevoegen</a>
-    <a href="admin_pagina.php" class="get-started-btn">Lespaketten opzoeken en aanpassingen</a>
-    
+    <h2>Lessen</h2>
+    <a href="admin_pagina_lessenpaket_overzicht.php" class="get-started-btn">Lessen </a>
+    <a href="admin_pagina_lessenpaket_Toevoegen.php" class="get-started-btn">Lespaketten behren</a>
     </div>
 <br>
 <br>

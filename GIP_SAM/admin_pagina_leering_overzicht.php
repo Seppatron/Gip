@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -71,7 +72,7 @@
   <h2>Leerling Zoeken en aanpassen</h2>  
 <br>
     <form name="frmleerling" method="post" action="<?php echo $_SERVER['PHP_SELF']?>">
-                <label>Naam of email:</label>
+                <label>Voornaam of email:</label>
                 <input type="text" name="leerling">
                 <button type="submit" class="get-started-btn" name="search">Zoek</button>
             </form>
@@ -82,7 +83,7 @@
                         <b>ID</b>
                     </td>
                     <td>
-                        <b>Naam</b>
+                        <b>Voornaam</b>
                     </td>
                     <td>
                         <b>Achternaam</b>
@@ -120,14 +121,14 @@
                 }
                 else 
                 {
-                    if(isset($_POST["search"]) && isset($_POST["leerling"]) && $_POST["leerling"] != "") 
-                    {
+                   // if(isset($_POST["search"]) && isset($_POST["leerling"]) && $_POST["leerling"] != "") 
+                //    {
                         if(mysqli_connect_errno()) 
                         {
                             trigger_error('fout bij verbinding'.$mysqli->error);
                         }
                         
-                        if(strpos($_POST["leerling"], '@') !== false) 
+                        if(isset($_POST["leerling"]) && strpos($_POST["leerling"], '@') !== false) 
                         {
                             $sql = "SELECT l.id,l.naam,l.voornaam,l.postid,l.adres,l.email,l.telefoon,l.typegitaarid,l.genreid,g.PCode,g.PostcodeId,t.typeID,t.typegitaren,b.genreid,b.muziekgenre FROM tbllid l,tblgemeente g,tbltypes t,tblgenre b WHERE l.voornaam LIKE ? and l.postid=g.PostcodeId and l.typegitaarid=t.typeID and l.genreid=b.genreid ORDER BY l.id";
                         }
@@ -138,8 +139,17 @@
                         if($stmt = $mysqli->prepare($sql)) 
                         {
                             $stmt->bind_param('s', $zoek);
+                            
+                            if (isset($_POST["leerling"])) {
+                                $zoekertje = $_POST["leerling"];
+                            }
+                                else
+                             {
+                                $zoekertje ="";
+                            }
+                            
 
-                            $zoek = $_POST["leerling"]."%";
+                            $zoek = "%".$zoekertje."%";
                             if(!$stmt->execute()) 
                             {
                                 echo "het uitvoeren is mislukt: ".$stmt->error."in query ".$sql;
@@ -165,11 +175,12 @@
                         {
                             echo "er is een fout in query: ".$mysqli->error;
                         }
-                    }
+                   // }
                 }
             ?>
-            </table>
             </div>
+            </table>
+    </div>      
 <br>
 <br>
 <br>

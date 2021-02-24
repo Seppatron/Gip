@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -106,46 +107,6 @@
             ok=false;
         }
      }
-            if (document.getElementById("paswoord").value==""){
-    document.getElementById("paswoordVerplicht").innerHTML="Gelieve een paswoord in te vullen";
-    ok=false;
-        }
-    else{
-        document.getElementById("paswoordVerplicht").innerHTML="";
-    } 
-    
- if (document.getElementById("paswoord").value != "") {
-   var string=document.getElementById("paswoord").value;
-    
-	var filter=/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
-   
-     if ( filter.test(string)){
-     document.getElementById("paswoordControle").innerHTML="";
-        
-        
-    }
-    else{
-         document.getElementById("paswoordControle").innerHTML="Ongeldig paswoord, bevat minstens 1 cijfer en 1 hoofdletter en kleine letter, minimum 8 characters";
-        ok=false;
-        
-    }
- }
-  if (document.getElementById("paswoordConfirm").value==""){
-    document.getElementById("paswoordConfirmVerplicht").innerHTML="Gelieve een bevestigingspaswoord in te vullen";
-    ok=false;
-        }
-    else{
-        document.getElementById("paswoordConfirmVerplicht").innerHTML="";
-   }
-  if (!(document.getElementById("paswoordConfirm").value==document.getElementById("paswoord").value)){
-    document.getElementById("paswoordConfirmVerplicht").innerHTML="bevestigingspaswoord en paswoord komen niet overeen";
-    ok=false;
-        }
-    else{
-        document.getElementById("paswoordConfirmVerplicht").innerHTML +="";
-    }
-	
-	
     if (ok==true){
      <?php
 	
@@ -155,7 +116,7 @@
 	}
 	?>
        
-    document.form1.submit();
+    document.form1.invoegen();
 }
 }
 </script>
@@ -311,7 +272,41 @@ if ((isset($_POST["verzenden"]))&& (isset($_POST["type"]) && ($_POST["type"] != 
     }
 }
 ?> 
-    
+<?php
+if ((isset($_POST["verzenden"]))&& (isset($_POST["oudersid"])))
+{
+    $mysqli=new MySQLI("localhost","root","","databasegip");
+    if (mysqli_connect_errno())
+    {
+        trigger_error('Fout bij verbinding: '.$mysqli->error);
+    }
+    else
+    {
+        $sql="select o.oudersid from tbloudersperleerling o where o.ouderemail=?";
+        if ($stmt=$mysqli->prepare($sql))
+        {
+            $stmt->bind_param('s',$ouderemail);
+            $ouderemail= $_POST["oudersid"];
+            if(!$stmt->execute())
+            {
+                echo 'Het uitvoeren van de query is mislukt: '.$stmt->error.'in query';
+            }
+            else
+            {   
+                $stmt->bind_result($oudersid);
+                $stmt->fetch();
+                $oudersid1= $oudersid;
+                 
+            }
+            $stmt->close();
+        }
+        else
+        {
+            echo 'Er is een fout in de query: '.$mysqli->error;
+        }
+    }
+}
+?>
 <?php
 if ((isset($_POST["verzenden"]))&& (isset($_POST["genre"]) && ($_POST["genre"] != "")))
 {
@@ -347,8 +342,7 @@ if ((isset($_POST["verzenden"]))&& (isset($_POST["genre"]) && ($_POST["genre"] !
     }
 }
 ?>
-
- <?php 
+<?php 
     if ((isset($_POST["verzenden"]))&& (isset($_POST["naam"])) && ($_POST["naam"] != "") &&isset($_POST["voornaam"]) && $_POST["voornaam"] !="" && (isset($_POST["type"]) && ($_POST["type"] != "") && (isset($_POST["postcode"])) && ($_POST["postcode"] != "") &&isset($_POST["gemeente"]) && $_POST["gemeente"] !=""  ) && $aantalPostcodeId1 >0)
     {
         $mysqli= new MySQLi("localhost","root","","databasegip");
@@ -358,17 +352,16 @@ if ((isset($_POST["verzenden"]))&& (isset($_POST["genre"]) && ($_POST["genre"] !
         }
         else
         {  
-           $sql = "INSERT INTO tbllid (naam,voornaam,postid,adres,email,telefoon,wachtwoord,typegitaarid,genreid) VALUES (?,?,?,?,?,?,?,?,?)"; 
+           $sql = "INSERT INTO tbllid (naam,voornaam,postid,adres,email,telefoon,typegitaarid,genreid) VALUES (?,?,?,?,?,?,?,?)"; 
             if($stmt = $mysqli->prepare($sql)) 
             {     
-                $stmt->bind_param('ssissssii', $naam, $voornaam,$postid,$adres,$email,$telefoon,$wachtwoord,$typegitaarid,$genreid);
+                $stmt->bind_param('ssisssii', $naam, $voornaam,$postid,$adres,$email,$telefoon,$typegitaarid,$genreid);
                 $naam = $mysqli->real_escape_string($_POST['naam']) ;
                 $voornaam = $mysqli->real_escape_string($_POST['voornaam']);
                 $postid=$mysqli->real_escape_string($PostcodeId1);
                 $adres = $mysqli->real_escape_string($_POST['adres']);
                 $email = $mysqli->real_escape_string($_POST['email']);
                 $telefoon = $mysqli->real_escape_string($_POST['telefoon']);
-                $wachtwoord = $mysqli->real_escape_string($_POST['paswoord']);
                 $typegitaarid = $mysqli->real_escape_string($typeID1);
                 $genreid = $mysqli->real_escape_string($genreid1);
                 if(!$stmt->execute())
@@ -384,13 +377,14 @@ if ((isset($_POST["verzenden"]))&& (isset($_POST["genre"]) && ($_POST["genre"] !
             }
             else
             {
-                echo 'Er zit een fout in de query'; 
+                echo 'Er zit een fout in de query'.$mysqli->error; 
             }
             
          
         }
     }
-?>        
+?>       
+        
 <form id="form1" name="form1" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?> " >
     <h2>Leerling toevoegen</h2>
     <table cellspacing="4">
@@ -406,8 +400,41 @@ if ((isset($_POST["verzenden"]))&& (isset($_POST["genre"]) && ($_POST["genre"] !
         </tr>
         <tr>
             <td><label for="oudersid">Ouders:</label></td>
-            <td><input type="text" name="oudersid" id="oudersid" placeholder="ouder" /></td>
-            <td><a href="admin_pagina_ouder_toevoegen.php" class="get-started-btn">Ouder toevoegen</a></td>
+            <td><select name="oudersid">
+            <?php
+                $mysqli=new MySQLI("localhost","root","","databasegip");
+
+                if (mysqli_connect_errno())
+                {
+                    trigger_error('Fout bij verbinding: '.$mysqli->error);
+                }
+                else
+                {
+                    $sql="select oudersid,ouderemail from tbloudersperleerling order by oudersid";
+                    if ($stmt=$mysqli->prepare($sql))
+                    {
+                        if(!$stmt->execute())
+                        {
+                            echo 'Het uitvoeren van de query is mislukt: '.$stmt->error.'in query';
+                        }
+                        else
+                        {
+                            $stmt->bind_result($oudersid,$ouderemail);
+                            while($stmt->fetch())
+                            {
+                                    echo "<option>".$ouderemail."</option>";
+                            }
+                        }
+                        $stmt->close();
+                    }
+                    else
+                    {
+                        echo 'Er is een fout in de query: '.$mysqli->error;
+                    }
+                }
+            ?>  
+    </select></td>
+            <td><a href="admin_pagina_ouder_overzicht.php" class="get-started-btn">Ouder toevoegen en overzicht</a></td>
         </tr>
         
         <tr>
@@ -549,18 +576,9 @@ if ((isset($_POST["verzenden"]))&& (isset($_POST["genre"]) && ($_POST["genre"] !
         </td>
         </tr>
         <tr>
-            <td><label for="paswoord">paswoord:</label></td>
-            <td><input type="password" name="paswoord" placeholder="paswoord" id="paswoord"/></td>
-            <td><label id="paswoordControle" class="fout"></label><label id="paswoordVerplicht" class="fout" required></label></td>
-        </tr>
-        <tr>
-            <td><label for="paswoordConfirm">bevestiging paswoord:</label></td>
-            <td><input type="password" name="paswoordConfirm" id="paswoordConfirm" placeholder="paswoord controle" ></td>
-            <td><label id="paswoordConfirmControle" class="fout"></label><label id="paswoordConfirmVerplicht" class="fout" required></label></td>
-        </tr>
-        <tr>
             <td>
-                <a class="get-started-btn" type="button" name="verzenden" id="verzenden" value="Verzenden" onClick="invoegen()">Leerling toevoegen</a>
+                 <!-- <a class="get-started-btn" type="button" name="verzenden" id="verzenden" value="Verzenden" onClick="invoegen()">Leerling toevoegen</a>-->
+                <input type="submit" name="verzenden" id="verzenden" value="verzenden"> 
             </td>
         </tr>
     </table>

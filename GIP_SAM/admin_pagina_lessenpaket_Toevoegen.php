@@ -71,7 +71,8 @@
     {
      <?php
 	
-	if (isset($_POST["naam"]) && $_POST["naam"] != "") {
+	if (isset($_POST["typelespakket"]) && $_POST["typelespakket"] != "") 
+    {
 
 	$_POST["verzenden"]="goed";
 	}
@@ -164,12 +165,12 @@
         </tr>
         <tr>
             <td><label for="prijsespakket">Prijsespakket:</label></td>
-            <td><input type="number" name="prijsespakket" min=0 max=500 placeholder="Prijs" ></td>
+            <td><input type="number" name="prijsespakket" min=0 max=1000 placeholder="Prijs" ></td>
             <td><label id="prijsespakketVerplicht" class="fout"></label></td>
         </tr>
         <tr>
             <td><label for="aantallessen">Aantal lessen:</label></td>
-            <td><input type="number" name="aantallessen" min=1 max=100 placeholder="Aantal lessen" ></td>
+            <td><input type="number" name="aantallessen" min=1 max=500 placeholder="Aantal lessen" ></td>
             <td><label id="aantallessenVerplicht" class="fout"></td>
         </tr>
         <tr>
@@ -179,8 +180,101 @@
         </tr>
     </table>
 </form>
-    
-    
+ <?php
+    if ((isset($_GET["actie"]) && $_GET["actie"] == "wis") && (isset($_GET["typelespakketid"])))
+    {
+        $mysqli= new MySQLi("localhost","root","","databasegip");
+        if(mysqli_connect_errno())
+        {
+            trigger_error('Fout bij verbinding: '.$mysqli->error); 
+        }
+        $sql = "delete from tbllespaket WHERE typelespakketid = ?";   
+        if
+            ($stmt = $mysqli->prepare($sql)) 
+        {   
+            $stmt->bind_param('i',$typelespakketid);
+            $oudersid= $_GET["typelespakketid"]; 
+            if(!$stmt->execute())
+            {
+                echo 'het uitvoeren van de query is mislukt:';
+            }
+            else  
+            { 
+                echo 'Het deleten is gelukt'; 
+            }
+            $stmt->close();
+        }
+        else
+        {
+            echo 'Er zit een fout in de query'.$mysqli->error;
+        }
+    }
+?>    
+    <form id="form3" name="form3" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?> " >
+<h2>Ouder overzicht</h2>
+    <table width="100%" border="1" >
+        <tr>
+            <td>ID</td>
+            <td>Type lespaket</td>
+            <td>Prijs</td>
+            <td>Aantal lessen</td> 
+            <td>Verwijderen</td> 
+            <td>Aanpassen</td> 
+        </tr>
+        <div>
+            <?php 
+                $mysqli= new MySQLi("localhost","root","","databasegip");
+                if(mysqli_connect_errno()) 
+                {
+                    trigger_error('Fout bij verbinding: '.$mysqli->error); 
+                }
+                else
+                {
+                    $sql= "select typelespakketid, typelespakket, prijsespakket, aantallessen from tbllespaket";
+                    if($stmt = $mysqli->prepare($sql)) 
+                    {  
+                        if(!$stmt->execute())     
+                        { 
+                            echo 'Het uitvoeren van de query is mislukt:'.$stmt->error.' in query: '.$sql;
+                        } 
+                        else      
+                        { 
+                            $stmt->bind_result($typelespakketid, $typelespakket, $prijsespakket, $aantallessen); 
+                            while($stmt->fetch()) 
+                            { 
+                               $teverwijderen = $typelespakketid;
+                                echo '<tr>
+                                        <td>'.$typelespakketid."</dt>
+                                        <td>".$typelespakket."</td>
+                                        <td>".$prijsespakket."</td>
+                                        <td>".$aantallessen.'</td>
+                                    <td>';
+?>
+<form name="form2" method="post" action="<?php echo $_SERVER['PHP_SELF']?>?actie=wis&typelespakketid=<?php echo $teverwijderen ; ?> ">
+    <input type="submit" name="btnwissen" id="wis" value="wis">
+</form>
+<?php 
+                    echo "</td>";
+                    echo "<td>";
+?>
+<form name="form1" method="post" action="admin_pagina_lessenpaket_aanpassen.php?action=edit&typelespakketid=<?php echo $typelespakketid;?>">
+    <input type="submit" name="btnedit" id="action" value="Aanpassen">
+</form>
+<?php 
+                    echo "</td>";
+                    echo "</tr>";
+                } 
+            } $stmt->close(); 
+        }  
+        else  
+        {    
+            echo 'Er zit een fout in de query: '.$mysqli->error; 
+        } 
+    }
+?>
+            </div>
+            </table>    
+    </form>
     
     
     

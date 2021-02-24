@@ -1,3 +1,17 @@
+
+<?php
+    $delogin = "admin";
+    $hetpaswoord = "admin";
+    session_start();
+    if (isset($_POST["inloggen"]))
+    { 
+        if ($_POST["email"] == $delogin && $_POST["wachtwoord"] == $hetpaswoord)
+        {   
+            $_SESSION["admin"]="admin";
+            header("location:admin_index.php");
+        }
+    }
+?>
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -18,8 +32,7 @@
 					<i class="fas fa-lock"></i>
 				</label>
 				<input type="password" name="wachtwoord" placeholder="wachtwoord" id="wachtwoord" required>
-                <input type="submit" value="Login">
-                <a href="admin_index.php" class="get-started-btn">admin</a>
+                <input type="submit" value="inloggen"  name="inloggen">
 			</form>
 		</div>
 	</body>
