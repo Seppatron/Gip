@@ -163,6 +163,86 @@
 <br>
 <br>
 <br> 
+    <?php
+if ((isset($_POST["verzenden"]))&& (isset($_POST["postcode"])) && ($_POST["postcode"] != "") &&isset($_POST["gemeente"]) && $_POST["gemeente"] !="" )
+{
+    $mysqli=new MySQLI("localhost","root","","databasegip");
+    if (mysqli_connect_errno())
+    {
+        trigger_error('Fout bij verbinding: '.$mysqli->error);
+    }
+    else
+    {
+        $sql="select count(PostcodeId) from tblgemeente where PCode=? and Gemeente=?";
+        if ($stmt=$mysqli->prepare($sql))
+        {
+            $stmt->bind_param('ss',$PCode,$gemeente);
+            $PCode= $_POST["postcode"];
+            $gemeente = $_POST["gemeente"];
+           if(!$stmt->execute())
+            {
+                echo 'Het uitvoeren van de query is mislukt: '.$stmt->error.'in query';
+            }
+            else
+            {  
+                $stmt->bind_result($aantalPostcodeId);
+                $stmt->fetch();
+                $aantalPostcodeId1= $aantalPostcodeId;
+                if ($aantalPostcodeId1 >0)
+                {
+                    ?>
+                    <?php
+                        if ((isset($_POST["verzenden"]))&& (isset($_POST["postcode"])) && ($_POST["postcode"] != "") &&isset($_POST["gemeente"]) && $_POST["gemeente"] !="" )
+                        {
+                            $mysqli=new MySQLI("localhost","root","","databasegip");
+
+                            if (mysqli_connect_errno())
+                            {
+                                trigger_error('Fout bij verbinding: '.$mysqli->error);
+                            }
+                            else
+                            {
+                                $sql="select PostcodeId from tblgemeente where PCode=? and Gemeente=?";
+                                if ($stmt=$mysqli->prepare($sql))
+                                {
+                                    $stmt->bind_param('ss',$PCode,$gemeente);
+                                    $PCode= $_POST["postcode"];
+                                    $gemeente = $_POST["gemeente"];
+                                   if(!$stmt->execute())
+                                    {
+                                        echo 'Het uitvoeren van de query is mislukt: '.$stmt->error.'in query';
+                                    }
+                                    else
+                                    {  
+                                        $stmt->bind_result($PostcodeId);
+                                        $stmt->fetch();
+                                        $PostcodeId1= $PostcodeId;
+                                    }
+                                    $stmt->close();
+                                }
+                                else
+                                {
+                                    echo 'Er is een fout in de query: '.$mysqli->error;
+                                }
+                            }
+                        }
+                    ?>            
+                <?php  
+                }
+                else
+                {
+                    echo "postcode en gemeente komen niet overeen";
+                }
+            }
+            @$stmt->close();
+        }
+        else
+        {
+            echo 'Er is een fout in de query: '.$mysqli->error;
+        }
+    }
+}
+?> 
 <?php
     $mysqli = new MySQLi("localhost", "root", "", "databasegip");
     if(mysqli_connect_errno()) 
@@ -223,7 +303,7 @@
                 $stmt->bind_param('ississsii', $id,$naam, $voornaam,$postid,$adres,$email,$telefoon,$typegitaarid,$genreid);
                 $naam = $mysqli->real_escape_string($_POST['naam']) ;
                 $voornaam = $mysqli->real_escape_string($_POST['voornaam']);
-                $postid=$mysqli->real_escape_string('postcode');
+                $postid=$mysqli->real_escape_string($PostcodeId1);
                 $adres = $mysqli->real_escape_string($_POST['adres']);
                 $email = $mysqli->real_escape_string($_POST['email']);
                 $telefoon = $mysqli->real_escape_string($_POST['telefoon']);

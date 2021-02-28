@@ -317,7 +317,7 @@ if ((isset($_POST["verzenden"]))&& (isset($_POST["genre"]) && ($_POST["genre"] !
     }
     else
     {
-        $sql="select  b.genreid from tblgenre b where b.muziekgenre=?";
+        $sql="select b.genreid from tblgenre b where b.muziekgenre=?";
         if ($stmt=$mysqli->prepare($sql))
         {
             $stmt->bind_param('s',$muziekgenre);
@@ -444,42 +444,9 @@ if ((isset($_POST["verzenden"]))&& (isset($_POST["genre"]) && ($_POST["genre"] !
         </tr>
         <tr>
         <td><label for="postcode">Postcode:</label></td>
-            <td><select name="postcode">
-            <?php
-                $mysqli=new MySQLI("localhost","root","","databasegip");
-
-                if (mysqli_connect_errno())
-                {
-                    trigger_error('Fout bij verbinding: '.$mysqli->error);
-                }
-                else
-                {
-                    $sql="select * from tblgemeente group by PCode order by PCode";
-                    if ($stmt=$mysqli->prepare($sql))
-                    {
-                        if(!$stmt->execute())
-                        {
-                            echo 'Het uitvoeren van de query is mislukt: '.$stmt->error.'in query';
-                        }
-                        else
-                        {
-                            $stmt->bind_result($Postcodeid,$PCode,$gemeente,$UCGemeente);
-                            while($stmt->fetch())
-                            {
-                                    echo "<option>".$PCode."</option>";
-                            }
-                        }
-                        $stmt->close();
-                    }
-                    else
-                    {
-                        echo 'Er is een fout in de query: '.$mysqli->error;
-                    }
-                }
-            ?>  
-    </select>
+            <td><input type="text" name="postcode" placeholder="postcode" id="postcode"/></td>
+            <td><label id="postcodeVerplicht" class="fout"></label>
         </td>
-        </tr>
         <tr>
             <td><label for="gemeente">gemeente:</label></td>
             <td>
@@ -577,8 +544,7 @@ if ((isset($_POST["verzenden"]))&& (isset($_POST["genre"]) && ($_POST["genre"] !
         </tr>
         <tr>
             <td>
-                 <!-- <a class="get-started-btn" type="button" name="verzenden" id="verzenden" value="Verzenden" onClick="invoegen()">Leerling toevoegen</a>-->
-                <input type="submit" name="verzenden" id="verzenden" value="verzenden"> 
+                <input class="get-started-btn" type="submit" name="verzenden" id="verzenden" value="Leerling toevoegen" onClick="invoegen()" > 
             </td>
         </tr>
     </table>
