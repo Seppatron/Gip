@@ -199,8 +199,7 @@
         </tr>
         <tr>
             <td>
-                <a class="get-started-btn" type="button" name="toevoegen" id="toevoegen" value="toevoegen" onClick="toevoegen()">ouder toevoegen</a>
-                <input type="submit" name="toevoegen" id="toevoegen" value="toevoegen" />
+                <input class="get-started-btn" type="submit" name="toevoegen" id="toevoegen" value="toevoegen" />
             </td>
         </tr>
     </table>
@@ -278,14 +277,14 @@
                                     <td>';
 ?>
 <form name="form2" method="post" action="<?php echo $_SERVER['PHP_SELF']?>?actie=wis&oudersid=<?php echo $teverwijderen ; ?> ">
-    <input type="submit" name="btnwissen" id="wis" value="wis">
+    <input class="get-started-btn" type="submit" name="btnwissen" id="wis" value="wis">
 </form>
 <?php 
                     echo "</td>";
                     echo "<td>";
 ?>
 <form name="form1" method="post" action="admin_pagina_ouder_aanpassen.php?action=edit&oudersid=<?php echo $oudersid;?>">
-    <input type="submit" name="btnedit" id="action" value="Aanpassen">
+    <input class="get-started-btn" type="submit" name="btnedit" id="action" value="Aanpassen">
 </form>
 <?php 
                     echo "</td>";

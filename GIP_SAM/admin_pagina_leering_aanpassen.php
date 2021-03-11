@@ -244,6 +244,78 @@ if ((isset($_POST["verzenden"]))&& (isset($_POST["postcode"])) && ($_POST["postc
 }
 ?> 
 <?php
+if ((isset($_POST["verzenden"]))&& (isset($_POST["type"]) && ($_POST["type"] != "")))
+{
+    $mysqli=new MySQLI("localhost","root","","databasegip");
+
+    if (mysqli_connect_errno())
+    {
+        trigger_error('Fout bij verbinding: '.$mysqli->error);
+    }
+    else
+    {
+        $sql="select  t.typeID from tbltypes t where t.typegitaren=?";
+        if ($stmt=$mysqli->prepare($sql))
+        {
+            $stmt->bind_param('s',$typegitaren);
+           
+            $typegitaren= $_POST["type"];
+            if(!$stmt->execute())
+            {
+                echo 'Het uitvoeren van de query is mislukt: '.$stmt->error.'in query';
+            }
+            else
+            {   
+                $stmt->bind_result($typeID);
+                $stmt->fetch();
+                $typeID1= $typeID;
+            }
+            $stmt->close();
+        }
+        else
+        {
+            echo 'Er is een fout in de query: '.$mysqli->error;
+        }
+    }
+}
+?> 
+<?php
+if ((isset($_POST["verzenden"]))&& (isset($_POST["genre"]) && ($_POST["genre"] != "")))
+{
+    $mysqli=new MySQLI("localhost","root","","databasegip");
+    if (mysqli_connect_errno())
+    {
+        trigger_error('Fout bij verbinding: '.$mysqli->error);
+    }
+    else
+    {
+        $sql="select b.genreid from tblgenre b where b.muziekgenre=?";
+        if ($stmt=$mysqli->prepare($sql))
+        {
+            $stmt->bind_param('s',$muziekgenre);
+            $muziekgenre= $_POST["genre"];
+            if(!$stmt->execute())
+            {
+                echo 'Het uitvoeren van de query is mislukt: '.$stmt->error.'in query';
+            }
+            else
+            {   
+                $stmt->bind_result($genreid);
+                $stmt->fetch();
+                $genreid1= $genreid;
+                 
+            }
+            $stmt->close();
+        }
+        else
+        {
+            echo 'Er is een fout in de query: '.$mysqli->error;
+        }
+    }
+}
+?>
+    
+<?php
     $mysqli = new MySQLi("localhost", "root", "", "databasegip");
     if(mysqli_connect_errno()) 
     {
@@ -289,7 +361,7 @@ if ((isset($_POST["verzenden"]))&& (isset($_POST["postcode"])) && ($_POST["postc
     if ((isset($_POST["verzenden"]))&& (isset($_POST["naam"])) && ($_POST["naam"] != "") &&isset($_POST["voornaam"]) && $_POST["voornaam"] !="")
     {
         
-        echo "hier";
+        
         $mysqli= new MySQLi("localhost","root","","databasegip");
         if(mysqli_connect_errno()) 
         {
@@ -297,11 +369,11 @@ if ((isset($_POST["verzenden"]))&& (isset($_POST["postcode"])) && ($_POST["postc
         }
         else
         {  
-            $sql= "UPDATE tbloudersperleerling SET naam = ?,voornaam= ?,postid= ?,adres= ?, email = ?,telefoon= ?,typegitaarid= ?,genreid= ? WHERE id = ?";
+            $sql= "UPDATE tbllid SET naam = ?,voornaam= ?,postid= ?,adres= ?, email = ?,telefoon= ?,typegitaarid= ?,genreid= ? WHERE id = ?";
             if ($stmt=$mysqli->prepare($sql))
             {
                 $stmt->bind_param('ississsii', $id,$naam, $voornaam,$postid,$adres,$email,$telefoon,$typegitaarid,$genreid);
-                $naam = $mysqli->real_escape_string($_POST['naam']) ;
+                $id= $_SESSION["id"];
                 $voornaam = $mysqli->real_escape_string($_POST['voornaam']);
                 $postid=$mysqli->real_escape_string($PostcodeId1);
                 $adres = $mysqli->real_escape_string($_POST['adres']);
@@ -309,10 +381,9 @@ if ((isset($_POST["verzenden"]))&& (isset($_POST["postcode"])) && ($_POST["postc
                 $telefoon = $mysqli->real_escape_string($_POST['telefoon']);
                 $typegitaarid = $mysqli->real_escape_string($typeID1);
                 $genreid = $mysqli->real_escape_string($genreid1);
-                $id= $_SESSION["id"];
                 if(!$stmt->execute())
                 {
-                    echo 'Het uitvoeren van de query is mislukt: '.$mysqli->error;
+                    echo 'Het uitvoeren van de query is mislukt: ok '.$mysqli->error;
                 }
                 else
                 {
@@ -326,6 +397,7 @@ if ((isset($_POST["verzenden"]))&& (isset($_POST["postcode"])) && ($_POST["postc
             }
         }
     }
+    
 ?>
     <form id="form1" name="form1" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?> "  >
     <h2>Leerling aanpassen</h2>
@@ -464,7 +536,7 @@ if ((isset($_POST["verzenden"]))&& (isset($_POST["postcode"])) && ($_POST["postc
         <tr>
             <td>
                 <!--  <a class="get-started-btn" type="button" name="verzenden" id="verzenden" value="Verzenden" onClick="invoegen()">Leerling toevoegen</a> -->
-                <input type="submit" name="verzenden" id="verzenden" value="verzenden">
+                <input class="get-started-btn" type="submit" name="verzenden" id="verzenden" value="verzenden">
             </td>
         </tr>
     </table>

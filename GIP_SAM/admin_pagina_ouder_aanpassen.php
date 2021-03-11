@@ -2,7 +2,7 @@
         session_start();  
         if( isset($_GET["oudersid"]))
         {
-          
+      
             $_SESSION["oudersid"] = $_GET["oudersid"];
         }
     ?>
@@ -256,7 +256,7 @@
             <td>
                <!-- <a class="get-started-btn" type="button" name="verzenden" id="verzenden" value="Verzenden"  onClick="aanpassen()">Ouder aanpassen</a>  -->
               
-                <input type="submit" name="verzenden" id="verzenden" value="verzenden"> 
+                <input class="get-started-btn" type="submit" name="verzenden" id="verzenden" value="verzenden"> 
             </td>
         </tr>
     </table>

@@ -211,7 +211,7 @@
     }
 ?>    
     <form id="form3" name="form3" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?> " >
-<h2>Ouder overzicht</h2>
+<h2>Lessenpaket overzicht</h2>
     <table width="100%" border="1" >
         <tr>
             <td>ID</td>

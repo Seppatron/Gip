@@ -163,7 +163,7 @@
                                     echo "<tr><td>".$id."</td><td>". $voornaam ."</td><td>". $naam ."</td><td>".$email."</td><td>".$telefoon."</td><td>".$adres."</td><td>".$PCode."</td><td>".$typegitaren."</td><td>".$muziekgenre."</td><td>";
                     ?>
                                     <form name="form1" method="post" action="admin_pagina_leering_aanpassen.php?action=edit&id=<?php echo $id;?>">
-                                        <input type="submit" name="btnedit" id="action" value="Aanpassen">
+                                        <input class="get-started-btn" type="submit" name="btnedit" id="action" value="Aanpassen" > 
                                     </form>
                     <?php
                                     echo "</td></tr>";
